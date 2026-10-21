@@ -1,72 +1,31 @@
-# Delivery Dispatch Simulator
+# SwiftDispatch
 
-## Project Summary
-**Category:** Finance, Commerce & Business  
-**Difficulty:** Intermediate  
-**Suggested team split:** Dispatch rules, driver simulation, tracking UI, analytics 
+A responsive Port Harcourt delivery simulator for customers, riders, and admins.
+The frontend follows the four supplied UI flow boards with a dark sidebar,
+emerald actions, navy/blue interface, mobile bottom navigation, delivery cards,
+and interactive Leaflet/OpenStreetMap maps with simulated positions.
 
-## Description
-This project is a good fit for a small team that wants to build something real and usable in a short amount of time. It focuses on one clear feature, clean data flow, and a simple user experience that can be demoed without extra fluff. The goal is to turn a good idea into a working MVP with a solid backend, a basic interface, and a realistic set of edge cases.
+```sh
+cd frontend
+npm ci
+npm run dev
+```
 
-## Scope
-Assign delivery requests to drivers based on availability and distance, then track order status.
+Open http://127.0.0.1:5173 with FastAPI running on port 8000. Select a demo portal
+and sign in. Credentials: admin@example.com, customer01@example.com, or
+rider01@example.com; all seeded passwords are DemoPass123!.
 
-## Core Features
-- Deliver the main user flow from start to finish.
-- Support the required data model and user interactions.
-- Handle validation, edge cases, and error states cleanly.
-- Include basic monitoring, feedback, or reporting where relevant.
-- Make the app easy to explain during a live demo.
+```sh
+npm run lint
+npm test
+npm run build
+```
 
-## Deliverables
-- A working deployed application or API demo
-- A clear README with setup instructions and environment variables
-- A minimal database schema or data model definition
-- UI screens or API endpoints for the core MVP
-- A basic test strategy covering the happy path and one major failure path
-- A short demo script explaining the architecture, choices, and trade-offs
+[Setup and included screens](frontend/README.md) ·
+[Architecture](docs/architecture.md) · [API contract](docs/api-contract.md) ·
+[Backend compatibility limits](docs/backend-limitations.md) ·
+[Demo walkthrough](docs/demo-script.md) · [QA report](docs/qa-report.md)
 
-## Suggested Architecture
-- Frontend: simple dashboard, form-based interface, or lightweight visual layer
-- Backend: API or service layer for business logic and validation
-- Data layer: database, in-memory persistence, or structured file storage for MVP use
-- Optional extras: auth, async jobs, scheduling, WebSockets, caching, or notifications depending on the project
-
-## Learning Outcomes
-Matching, geospatial basics, state management
-
-## Recommended MVP Checklist
-1. Define the main user flow and success criteria.
-2. Build the data model and core backend logic.
-3. Connect the UI or client to the main application flow.
-4. Add key validation, security checks, and realistic error states.
-5. Test the happy path and at least one important edge case.
-6. Deploy the app and document the setup clearly.
-
-## Free Deployment Options
-Render or Railway for the API; Vercel for the admin UI; Supabase or Postgres for the data layer.
-
-## Good Free Hosting Choices
-- Static frontend: Vercel, Netlify, or GitHub Pages
-- API/backend: Render, Railway, or Fly.io
-- Database/realtime services: Supabase, Neon, Firebase, or Cloudflare D1
-- Documentation/demo pages: GitHub Pages, Cloudflare Pages, or Vercel
-
-## Typical Tech Stack
-- Frontend: React, Next.js, plain HTML/JS, or similar lightweight UI tooling
-- Backend: Node.js, Python (Flask/FastAPI), or Java/Spring Boot
-- Database: Postgres, SQLite, Supabase, or a simple file-based store
-- Real-time layer: WebSockets, polling, or background workers if needed
-
-## Final Demo Expectations
-- Provide a working URL with sample or seeded data
-- Show one clear end-to-end flow from start to finish
-- Explain the most important technical decisions and trade-offs
-- Include screenshots, screen recordings, or a brief live walk-through
-- Highlight what was completed in the MVP and what would be next if the project continued
-
-## Next Improvements
-- Add authorization, auditing, or stronger validation
-- Improve test coverage and resilience
-- Add analytics, metrics, or observability
-- Expand functionality once the core MVP is stable
+This branch contains frontend changes. The existing backend and SQLite schema
+were preserved. All operational data comes from FastAPI; no financial, signup,
+payout, promotion, or settings UI is included. Rider requests use HTTP polling.
