@@ -34,7 +34,7 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
   } catch {
     throw new ApiError(
       0,
-      'Unable to reach SwiftDispatch. Check that the backend is running on port 8000.',
+      'Unable to reach SwiftDispatch. Please try again shortly; the server may be waking up.',
     );
   }
   const data = await response.json().catch(() => null);

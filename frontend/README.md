@@ -99,3 +99,19 @@ backend contract takes precedence over the illustrative prompt. See
 [backend gaps](../docs/backend-limitations.md) for the existing invitation-based
 request transport, manual refresh requirement, missing order expiry, participant
 contact limitations, legacy registration endpoint, and actual lifecycle states.
+
+
+## Vercel deployment with Render
+
+Import the repository containing this frontend, select the `frontend` production
+branch, and set Root Directory to `frontend`. Use the Vite preset, `npm ci`,
+`npm run build`, and output directory `dist`.
+
+Set `VITE_API_BASE_URL=/api/v1` (or leave it unset). Do not set it to the absolute
+Render URL: `vercel.json` proxies `/api/*` to
+`https://three1-delivery-dispatch-simulator-1.onrender.com/api/*` before the SPA
+fallback. Browser requests stay on the Vercel origin, so this deployment does not
+require backend CORS. Redeploy after changing frontend environment variables.
+
+After deployment, verify sign-in, refreshing `/admin`, and creating a delivery.
+Render Free may take about a minute to wake up; retry if the first request fails.
