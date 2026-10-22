@@ -40,6 +40,8 @@ it('selects demo credentials and logs in to the account’s role', async () => {
   );
   vi.stubGlobal('fetch', fetcher);
   loginPage();
+  expect(screen.queryByText('TAKE A LOOK AROUND')).toBeNull();
+  expect(screen.queryByText(/All demo accounts use/)).toBeNull();
   const ui = userEvent.setup();
   await ui.click(screen.getByRole('button', { name: 'Admin' }));
   expect((screen.getByLabelText('Email address') as HTMLInputElement).value).toBe(

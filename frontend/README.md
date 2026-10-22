@@ -115,3 +115,25 @@ require backend CORS. Redeploy after changing frontend environment variables.
 
 After deployment, verify sign-in, refreshing `/admin`, and creating a delivery.
 Render Free may take about a minute to wake up; retry if the first request fails.
+
+
+## Support and receipt confirmation
+
+Customers can open order-linked tickets from delivery details or Support, and
+exchange messages with admins. Admins can reply, resolve, and reopen tickets from
+Support tickets. Conversations refresh every five seconds; resolved tickets are
+read-only until an admin reopens them.
+
+Every new delivery has a six-digit receipt code, visible only in the booking
+customer's order details. The customer shares it with the recipient. The rider
+must enter it after handover to complete delivery; the server rejects missing or
+incorrect codes and applies a one-minute cooldown after five incorrect attempts.
+Codes are not included in rider or admin order data.
+
+Deploy backend migration `0003` before this frontend: Render's start command must
+run `alembic upgrade head`. Existing active orders receive codes in the migration.
+On Render Free with local SQLite, tickets and orders are temporary, as with all
+other runtime database data.
+
+Login artwork uses responsive JPEG variants (approximately 282 KB desktop / 71 KB
+small) instead of downloading the original 1.89 MB PNG.

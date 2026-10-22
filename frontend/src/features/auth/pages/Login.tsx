@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../../hooks/useAuth';
 import { Brand, Button, Feedback } from '../../../components/ui';
-import { DemoNote } from '../components/DemoNote';
 import { DEMO_PASSWORD } from '../../../lib/constants';
 import type { Role } from '../../../types/user';
 export default function Login() {
@@ -54,7 +53,11 @@ export default function Login() {
       <section className="auth-art auth-photo">
         <img
           className="auth-rider-photo"
-          src="/assets/swiftdispatch-rider.png"
+          src="/assets/swiftdispatch-rider.jpg"
+          srcSet="/assets/swiftdispatch-rider-small.jpg 427w, /assets/swiftdispatch-rider.jpg 1024w"
+          sizes="(max-width: 767px) 100vw, 48vw"
+          width={1024}
+          height={1536}
           alt="SwiftDispatch rider on a motorcycle with a branded delivery bag"
           fetchPriority="high"
         />
@@ -202,8 +205,6 @@ export default function Login() {
               <ArrowRight size={18} />
             </Button>
           </form>
-          <DemoNote />
-          <p className="auth-trust">Account access is managed by your administrator.</p>
         </div>
         <footer className="auth-footer">
           © {new Date().getFullYear()} SwiftDispatch<span>Port Harcourt, Nigeria</span>

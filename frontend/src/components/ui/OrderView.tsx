@@ -14,6 +14,7 @@ import {
   Clock3,
 } from 'lucide-react';
 import type { Role } from '../../types/user';
+import { api } from '../../lib/apiClient';
 import { customerApi } from '../../features/customer/api';
 import { adminApi } from '../../features/admin/api';
 import { riderApi } from '../../features/rider/api';
@@ -34,6 +35,14 @@ export function OrderView({ role, tracking = false }: { role: Role; tracking?: b
   const { user } = useAuth();
   const now = usePolling(1000);
   const [radius, setRadius] = useState(5);
+  const [deliveryCode, setDeliveryCode] = useState('');
+  const confirmation = useQuery({
+    queryKey: [role, 'confirmation-code', orderId],
+    queryFn: () =>
+      api<{ delivery_code: string | null }>(`/customer/orders/${orderId}/confirmation-code`),
+    enabled: role === 'customer',
+    refetchInterval: 10000,
+  });
   const source = role === 'admin' ? adminApi : role === 'rider' ? riderApi : customerApi;
   const query = useQuery({
     queryKey: [role, 'order', orderId],
@@ -59,7 +68,7 @@ export function OrderView({ role, tracking = false }: { role: Role; tracking?: b
       if (action === 'cancel')
         return role === 'admin' ? adminApi.cancel(orderId) : customerApi.cancel(orderId);
       if (action === 'retry') return adminApi.broadcast(orderId, radius);
-      return riderApi.progress(orderId, action);
+      return riderApi.progress(orderId, action, action === 'delivered' ? deliveryCode : undefined);
     },
     onSuccess: (_, action) => {
       feedback.toast(
@@ -147,6 +156,25 @@ export function OrderView({ role, tracking = false }: { role: Role; tracking?: b
                   <span className="waiting-duration">{waited} min waiting</span>
                 )}
               </div>
+            )}
+            {role === 'customer' && !isTerminal(order) && (
+              <Panel title="Delivery confirmation code">
+                <div className="delivery-code-panel">
+                  <Feedback error={confirmation.error?.message} />
+                  <strong className="delivery-code">
+                    {confirmation.data?.delivery_code ?? 'Loading…'}
+                  </strong>
+                  <p>
+                    Share this code with the recipient. Give it to the rider only after the package
+                    has been received.
+                  </p>
+                </div>
+              </Panel>
+            )}
+            {role !== 'rider' && (
+              <Link className="button button-secondary" to={`/${role}/support?order=${order.id}`}>
+                {role === 'customer' ? 'Report a problem / open ticket' : 'View support tickets'}
+              </Link>
             )}
             <div className="order-detail-grid">
               <div>
@@ -276,9 +304,29 @@ export function OrderView({ role, tracking = false }: { role: Role; tracking?: b
                   )}
                   <div className="detail-actions">
                     <Feedback error={mutation.error?.message} />
+                    {role === 'rider' && next === 'delivered' && (
+                      <label>
+                        Recipient’s confirmation code
+                        <input
+                          aria-label="Delivery confirmation code"
+                          inputMode="numeric"
+                          autoComplete="off"
+                          maxLength={6}
+                          value={deliveryCode}
+                          onChange={(e) => setDeliveryCode(e.target.value.replace(/[^0-9]/g, ''))}
+                          placeholder="Six-digit code"
+                        />
+                        <span className="muted small">
+                          Ask for this code after handing over the package.
+                        </span>
+                      </label>
+                    )}
                     {role === 'rider' && next && (
                       <Button
-                        disabled={mutation.isPending}
+                        disabled={
+                          mutation.isPending ||
+                          (next === 'delivered' && !/^[0-9]{6}$/.test(deliveryCode))
+                        }
                         className="w-full"
                         onClick={async () => {
                           if (

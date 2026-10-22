@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, it, expect, vi } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen, cleanup, within, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { OrderView } from './OrderView';
@@ -63,4 +63,18 @@ it('keeps the backend-required transit step before delivery confirmation', async
   await screen.findByRole('button', { name: 'Start delivery' });
   expect(screen.queryByRole('button', { name: 'Confirm delivery' })).toBeNull();
   expect(screen.queryByRole('button', { name: 'Cancel delivery' })).toBeNull();
+});
+it('requires six digits before offering final delivery confirmation', async () => {
+  const userEvent = (await import('@testing-library/user-event')).default;
+  vi.mocked(riderApi.order).mockResolvedValue({ ...order, status: 'in_transit', rider_id: 1 });
+  view('rider');
+  const button = await screen.findByRole('button', { name: 'Confirm delivery' });
+  expect(button.hasAttribute('disabled')).toBe(true);
+  await userEvent.type(screen.getByLabelText('Delivery confirmation code'), '123456');
+  expect(button.hasAttribute('disabled')).toBe(false);
+  await userEvent.click(button);
+  await userEvent.click(
+    within(screen.getByRole('dialog')).getByRole('button', { name: 'Confirm delivery' }),
+  );
+  await waitFor(() => expect(riderApi.progress).toHaveBeenCalledWith(1, 'delivered', '123456'));
 });

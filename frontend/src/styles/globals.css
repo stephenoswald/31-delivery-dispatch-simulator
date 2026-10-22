@@ -4616,3 +4616,77 @@ tbody tr:hover {
     margin-top: 24px;
   }
 }
+
+.support-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(0, 2fr);
+  gap: 24px;
+  align-items: start;
+}
+.support-form,
+.support-conversation-heading,
+.support-messages,
+.support-ticket-list,
+.delivery-code-panel {
+  padding: 20px;
+}
+.support-form {
+  display: grid;
+  gap: 16px;
+}
+.support-form label {
+  display: grid;
+  gap: 8px;
+}
+.support-ticket {
+  display: grid;
+  text-align: left;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid #dbe5e2;
+  border-radius: 8px;
+  background: #fff;
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+.support-ticket[aria-pressed='true'] {
+  border-color: #009b70;
+  background: #ecfdf5;
+}
+.support-ticket-list,
+.support-messages {
+  display: grid;
+  gap: 12px;
+  max-height: 560px;
+  overflow-y: auto;
+}
+.support-message {
+  border-radius: 10px;
+  background: #f1f5f9;
+  padding: 16px;
+  min-width: 0;
+}
+.support-message-own {
+  background: #e7f7f1;
+}
+.support-message p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 10px 0;
+}
+.support-message small,
+.support-ticket small {
+  color: #64748b;
+}
+.delivery-code {
+  display: block;
+  font-size: 30px;
+  letter-spacing: 7px;
+  color: #007f61;
+  margin-bottom: 12px;
+}
+@media (max-width: 767px) {
+  .support-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
