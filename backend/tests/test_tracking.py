@@ -10,7 +10,7 @@ def test_tracking_only_exposes_order_linked_locations(client, headers, order_pay
     tracking=client.get(f"/api/v1/customer/orders/{oid}/tracking",headers=headers(1))
     assert tracking.status_code == 200, tracking.text
     assert tracking.json()["latest_location"]["latitude"] == 6.55
-    assert [e["event_type"] for e in tracking.json()["events"]] == ["created","broadcast","assigned"]
+    assert [e["event_type"] for e in tracking.json()["events"]] == ["created","payment_succeeded","broadcast","assigned"]
     locations=client.get(f"/api/v1/customer/orders/{oid}/locations",headers=headers(1)).json()
     assert len(locations)==1
     assert locations[0]["order_id"]==oid

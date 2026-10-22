@@ -213,3 +213,23 @@ new messages until reopened. Messages contain plain text, not attachments or ema
 The existing free Render start command can remain:
 `alembic upgrade head && python -m scripts.seed_demo && uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
 Local SQLite tickets, orders, and codes disappear with Render Free filesystem resets.
+
+
+## Simulated distance pricing and payment
+
+Run migration `0004` via the existing `alembic upgrade head` startup step.
+`POST /api/v1/customer/quote` accepts pickup/drop-off coordinates and returns
+straight-line distance (rounded to 0.01 km), base fare (50000 kobo), rate per km
+(10000 kobo), and total. Order creation calculates and stores this price and
+creates an unpaid `pending` order without invitations.
+
+`POST /api/v1/customer/orders/{id}/pay` accepts `{"outcome":"success"}` or
+`{"outcome":"failed"}` for the owning customer. Success generates a SIM-prefixed
+receipt, records paid_at and a payment event, and broadcasts in one transaction.
+Failed simulation returns 402 and leaves the order unpaid. Duplicate successful
+requests return the existing receipt. Cancelled orders cannot be paid. Broadcast,
+rider discovery, acceptance, and delivery progress enforce paid status.
+
+Existing orders are grandfathered into dispatch eligibility with their historical
+fees unchanged and no invented receipt or paid_at timestamp. This is a simulation,
+not a payment-provider integration; no actual charges or refunds occur.

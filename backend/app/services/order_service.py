@@ -27,12 +27,12 @@ def add_event(db, order, actor_id, event_type, previous=None, details=None):
                       previous_status=previous, new_status=order.status, details=details))
 
 def create_order(db, user, data):
-    from app.services.dispatch_service import broadcast
-    order = Order(**data.model_dump(), customer_id=user.id, tracking_code=tracking_code(), status="pending", delivery_code=f"{secrets.randbelow(1000000):06d}")
+    from app.services.payment_service import quote
+    price = quote(data)
+    order = Order(**data.model_dump(), customer_id=user.id, tracking_code=tracking_code(), status="pending", distance_km=price["distance_km"], delivery_fee_minor=price["delivery_fee_minor"], payment_status="unpaid", delivery_code=f"{secrets.randbelow(1000000):06d}")
     db.add(order)
     db.flush()
     add_event(db, order, user.id, "created")
-    broadcast(db, order, user.id)
     db.commit()
     db.refresh(order)
     return order
@@ -52,6 +52,8 @@ def cancel_order(db, order, actor_id):
     return order
 
 def progress_order(db, order, rider, actor_id, status, delivery_code=None):
+    if order.payment_status != "paid":
+        raise HTTPException(409, "Payment is required before delivery")
     transitions = {"assigned": "picked_up", "picked_up": "in_transit", "in_transit": "delivered"}
     if transitions.get(order.status) != status:
         raise HTTPException(409, "Invalid delivery status transition")

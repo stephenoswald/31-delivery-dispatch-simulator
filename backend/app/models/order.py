@@ -4,6 +4,10 @@ from app.db.base import Base
 class Order(Base):
     __tablename__ = "orders"
     id = Column(Integer, primary_key=True)
+    distance_km = Column(Float, nullable=False, default=0, server_default="0")
+    payment_status = Column(String(16), nullable=False, default="unpaid", server_default="unpaid")
+    payment_reference = Column(String(64), unique=True, index=True)
+    paid_at = Column(DateTime)
     delivery_code = Column(String(6))
     code_attempts = Column(Integer, nullable=False, default=0, server_default="0")
     code_locked_until = Column(DateTime)
@@ -24,6 +28,8 @@ class Order(Base):
     currency = Column(String(3), nullable=False, server_default="NGN")
     delivered_at = Column(DateTime)
     __table_args__ = (
+        CheckConstraint("payment_status IN ('unpaid', 'paid')", name="ck_order_payment_status"),
+        CheckConstraint("distance_km >= 0", name="ck_order_distance"),
         CheckConstraint("status IN ('pending', 'broadcasting', 'assigned', 'picked_up', 'in_transit', 'delivered', 'cancelled')", name="ck_order_status"),
         CheckConstraint("pickup_latitude BETWEEN -90 AND 90 AND dropoff_latitude BETWEEN -90 AND 90", name="ck_order_latitude"),
         CheckConstraint("pickup_longitude BETWEEN -180 AND 180 AND dropoff_longitude BETWEEN -180 AND 180", name="ck_order_longitude"),

@@ -38,7 +38,7 @@ def offers(offset: int = Query(0, ge=0), limit: int = Query(20, ge=1, le=100),
     rows = db.query(BroadcastOffer, Order).join(Order, Order.id == BroadcastOffer.order_id).filter(
         BroadcastOffer.rider_id == rider.id, BroadcastOffer.status == "pending",
         BroadcastOffer.expires_at > utcnow(), Order.status == "broadcasting",
-        Order.rider_id.is_(None), Order.id.in_(eligible_ids)).order_by(BroadcastOffer.id.desc()).offset(offset).limit(limit).all()
+        Order.rider_id.is_(None), Order.payment_status == "paid", Order.id.in_(eligible_ids)).order_by(BroadcastOffer.id.desc()).offset(offset).limit(limit).all()
     return [OfferDetail(**OfferOut.model_validate(offer).model_dump(), order=OrderOut.model_validate(order)) for offer, order in rows]
 
 @router.post("/offers/{offer_id}/accept", response_model=OrderOut)

@@ -9,6 +9,8 @@ from app.utils.geo import distance_km
 
 
 def broadcast(db, order, actor_id, radius_km=None):
+    if order.payment_status != "paid":
+        raise HTTPException(409, "Payment is required before dispatch")
     if order.status not in ("pending", "broadcasting"):
         raise HTTPException(409, "Only unassigned orders can be broadcast")
     now = utcnow()
@@ -58,7 +60,7 @@ def refresh_rider_requests(db, rider):
         return []
     eligible_ids = []
     changed = False
-    for order in db.query(Order).filter(Order.status == "broadcasting", Order.rider_id.is_(None)).all():
+    for order in db.query(Order).filter(Order.status == "broadcasting", Order.payment_status == "paid", Order.rider_id.is_(None)).all():
         event = db.query(OrderEvent).filter_by(order_id=order.id, event_type="broadcast").order_by(OrderEvent.id.desc()).first()
         radius = (event.details or {}).get("radius_km", settings.dispatch_radius_km) if event else settings.dispatch_radius_km
         if distance_km(order.pickup_latitude, order.pickup_longitude, rider.latitude, rider.longitude) > radius:
@@ -95,7 +97,7 @@ def accept_offer(db, offer, rider, user):
         RiderProfile.status == "available").values(status="busy").execution_options(synchronize_session=False))
     if rider_claim.rowcount != 1:
         raise HTTPException(409, "Rider is not available")
-    claim = db.execute(update(Order).where(Order.id == offer.order_id, Order.status == "broadcasting",
+    claim = db.execute(update(Order).where(Order.id == offer.order_id, Order.status == "broadcasting", Order.payment_status == "paid",
         Order.rider_id.is_(None)).values(rider_id=rider.id, status="assigned").execution_options(synchronize_session=False))
     if claim.rowcount != 1:
         raise HTTPException(409, "Order has already been claimed or cancelled")

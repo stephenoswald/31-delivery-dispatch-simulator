@@ -69,7 +69,9 @@ def ready_riders(client, headers):
 def create_order(client, headers, payload):
     result = client.post("/api/v1/customer/orders", headers=headers(1), json=payload)
     assert result.status_code == 201, result.text
-    return result.json()
+    paid = client.post(f"/api/v1/customer/orders/{result.json()['id']}/pay", headers=headers(1), json={"outcome":"success"})
+    assert paid.status_code == 200, paid.text
+    return paid.json()
 
 def offer_id(client, headers, uid=3):
     result = client.get("/api/v1/rider/offers", headers=headers(uid))

@@ -4,12 +4,22 @@ from sqlalchemy.orm import Session
 from app.core.dependencies import customer_user
 from app.db.session import get_db
 from app.models import User, Order, Review, OrderEvent, LocationHistory
-from app.schemas.order import OrderCreate, OrderOut, OrderStatus
+from app.schemas.order import OrderCreate, OrderOut, OrderStatus, QuoteInput, QuoteOut, PaymentInput
 from app.schemas.review import ReviewCreate, ReviewOut
 from app.schemas.tracking import TrackingOut, EventOut, LocationOut
 from app.services import order_service, tracking_service, review_service
 
 router = APIRouter(prefix="/customer", tags=["Customer"], dependencies=[Depends(customer_user)])
+
+@router.post("/quote", response_model=QuoteOut)
+def quote(data: QuoteInput, user: User = Depends(customer_user)):
+    from app.services.payment_service import quote
+    return quote(data)
+
+@router.post("/orders/{order_id}/pay", response_model=OrderOut)
+def pay(order_id: int, data: PaymentInput, user: User = Depends(customer_user), db: Session = Depends(get_db)):
+    from app.services.payment_service import pay
+    return pay(db, order_service.get_order(db, order_id, user), user, data.outcome)
 
 @router.post("/orders", response_model=OrderOut, status_code=201)
 def create_order(data: OrderCreate, user: User = Depends(customer_user), db: Session = Depends(get_db)):

@@ -16,7 +16,27 @@ class OrderCreate(BaseModel):
     recipient_phone: str = Field(min_length=5, max_length=32)
     package_description: Optional[str] = Field(default=None, max_length=2000)
 
+class QuoteInput(BaseModel):
+    pickup_latitude: float = Field(ge=-90, le=90)
+    pickup_longitude: float = Field(ge=-180, le=180)
+    dropoff_latitude: float = Field(ge=-90, le=90)
+    dropoff_longitude: float = Field(ge=-180, le=180)
+
+class QuoteOut(BaseModel):
+    distance_km: float
+    base_fare_minor: int
+    rate_per_km_minor: int
+    delivery_fee_minor: int
+    currency: str
+
+class PaymentInput(BaseModel):
+    outcome: Literal["success", "failed"] = "success"
+
 class OrderOut(OrderCreate, ORMModel):
+    distance_km: float
+    payment_status: Literal["unpaid", "paid"]
+    payment_reference: Optional[str]
+    paid_at: Optional[datetime]
     id: int
     tracking_code: str
     customer_id: int

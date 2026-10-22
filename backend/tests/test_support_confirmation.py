@@ -79,5 +79,7 @@ def test_confirmation_migration_backfills_existing_orders(tmp_path):
     with engine.connect() as db:
         row=db.execute(text('SELECT tracking_code,delivery_code,code_attempts FROM orders WHERE id=1')).one()
         assert row[0]=='EXISTING' and len(row[1])==6 and row[1].isdigit() and row[2]==0
+        assert db.execute(text("SELECT payment_status FROM orders WHERE id=1")).scalar()=='paid'
+        assert db.execute(text("SELECT payment_reference FROM orders WHERE id=1")).scalar() is None
         assert db.execute(text('PRAGMA foreign_key_check')).all()==[]
     engine.dispose()
