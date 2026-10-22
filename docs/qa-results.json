@@ -1,0 +1,1182 @@
+{
+  "date": "2026-10-21",
+  "timezone": "Africa/Lagos",
+  "environment": "Headless Chrome; disposable SQLite copy; actual FastAPI endpoints",
+  "frontend_unit_tests": 24,
+  "backend_regression_tests": 22,
+  "lint": "passed; zero warnings",
+  "build": "passed; strict TypeScript and Vite",
+  "workflow_checks": [
+    {
+      "test": "incorrect login",
+      "pass": true
+    },
+    {
+      "test": "rider online",
+      "pass": true
+    },
+    {
+      "test": "create delivery and pending tracking",
+      "orderId": 4,
+      "pass": true
+    },
+    {
+      "test": "rider accepted delivery",
+      "pass": true
+    },
+    {
+      "test": "customer sees rider acceptance",
+      "pass": true
+    },
+    {
+      "test": "pickup, transit, delivery lifecycle",
+      "pass": true
+    },
+    {
+      "test": "rider delivery history",
+      "pass": true
+    },
+    {
+      "test": "review and duplicate protection after refresh",
+      "pass": true
+    },
+    {
+      "test": "cancel eligible delivery",
+      "pass": true
+    },
+    {
+      "test": "customer blocked from admin",
+      "pass": true
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "admin",
+      "width": 320,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "admin",
+      "width": 375,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "admin",
+      "width": 390,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "admin",
+      "width": 768,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "admin",
+      "width": 1024,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "admin",
+      "width": 1440,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "route",
+      "path": "/admin/orders",
+      "error": false
+    },
+    {
+      "test": "route",
+      "path": "/admin/tracking",
+      "error": false
+    },
+    {
+      "test": "route",
+      "path": "/admin/riders",
+      "error": false
+    },
+    {
+      "test": "route",
+      "path": "/admin/customers",
+      "error": false
+    },
+    {
+      "test": "route",
+      "path": "/admin/analytics",
+      "error": false
+    },
+    {
+      "test": "route",
+      "path": "/admin/reports",
+      "error": false
+    },
+    {
+      "test": "route",
+      "path": "/admin/profile",
+      "error": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "customer",
+      "width": 320,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "customer",
+      "width": 375,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "customer",
+      "width": 390,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "customer",
+      "width": 768,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "customer",
+      "width": 1024,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "customer",
+      "width": 1440,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "route",
+      "path": "/customer/new",
+      "error": false
+    },
+    {
+      "test": "route",
+      "path": "/customer/orders",
+      "error": false
+    },
+    {
+      "test": "route",
+      "path": "/customer/history",
+      "error": false
+    },
+    {
+      "test": "route",
+      "path": "/customer/profile",
+      "error": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "rider",
+      "width": 320,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "rider",
+      "width": 375,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "rider",
+      "width": 390,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "rider",
+      "width": 768,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "rider",
+      "width": 1024,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "responsive dashboard",
+      "role": "rider",
+      "width": 1440,
+      "overflow": false,
+      "broken": false
+    },
+    {
+      "test": "route",
+      "path": "/rider/requests",
+      "error": false
+    },
+    {
+      "test": "route",
+      "path": "/rider/active",
+      "error": false
+    },
+    {
+      "test": "route",
+      "path": "/rider/history",
+      "error": false
+    },
+    {
+      "test": "route",
+      "path": "/rider/profile",
+      "error": false
+    },
+    {
+      "test": "responsive booking",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "test": "responsive booking",
+      "width": 375,
+      "overflow": false
+    },
+    {
+      "test": "responsive booking",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "test": "responsive booking",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "test": "responsive booking",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "test": "responsive booking",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "test": "invalid session redirected",
+      "pass": true
+    }
+  ],
+  "responsive_page_checks": [
+    {
+      "role": "admin",
+      "path": "orders",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "orders",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "orders",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "orders",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "orders",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "orders",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "orders/4",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "orders/4",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "orders/4",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "orders/4",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "orders/4",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "orders/4",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "tracking",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "tracking",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "tracking",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "tracking",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "tracking",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "tracking",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "riders",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "riders",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "riders",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "riders",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "riders",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "riders",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "riders/1",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "riders/1",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "riders/1",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "riders/1",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "riders/1",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "riders/1",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "customers",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "customers",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "customers",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "customers",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "customers",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "customers",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "analytics",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "analytics",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "analytics",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "analytics",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "analytics",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "analytics",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "reports",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "reports",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "reports",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "reports",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "reports",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "admin",
+      "path": "reports",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4/tracking",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4/tracking",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4/tracking",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4/tracking",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4/tracking",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4/tracking",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4/review",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4/review",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4/review",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4/review",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4/review",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "orders/4/review",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "history",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "history",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "history",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "history",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "history",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "history",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "new",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "new",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "new",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "new",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "new",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "new",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "profile",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "profile",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "profile",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "profile",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "profile",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "customer",
+      "path": "profile",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "requests",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "requests",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "requests",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "requests",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "requests",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "requests",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "orders/4",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "orders/4",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "orders/4",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "orders/4",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "orders/4",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "orders/4",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "active",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "active",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "active",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "active",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "active",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "active",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "history",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "history",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "history",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "history",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "history",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "history",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "profile",
+      "width": 320,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "profile",
+      "width": 375,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "profile",
+      "width": 390,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "profile",
+      "width": 768,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "profile",
+      "width": 1024,
+      "overflow": false,
+      "error": false
+    },
+    {
+      "role": "rider",
+      "path": "profile",
+      "width": 1440,
+      "overflow": false,
+      "error": false
+    }
+  ],
+  "final_keyboard_checks": [
+    {
+      "test": "mobile navigation sheet",
+      "pass": true
+    },
+    {
+      "test": "confirmation keyboard focus trap",
+      "pass": true
+    },
+    {
+      "test": "confirmation fits 320px",
+      "pass": true
+    },
+    {
+      "test": "logout",
+      "pass": true
+    }
+  ],
+  "operations_checks": [
+    {
+      "test": "Export orders",
+      "downloaded": true,
+      "rows": 6,
+      "noFinancialFields": true
+    },
+    {
+      "test": "Export report",
+      "downloaded": true,
+      "rows": 2,
+      "noFinancialFields": true
+    },
+    {
+      "test": "Export summary",
+      "downloaded": true,
+      "rows": 5,
+      "noFinancialFields": true
+    },
+    {
+      "test": "admin delivered filter",
+      "pass": true
+    },
+    {
+      "test": "offline request polling paused",
+      "pass": true
+    },
+    {
+      "test": "online request polling resumes",
+      "pass": true
+    }
+  ],
+  "browser_exceptions": [],
+  "unexpected_requests": [],
+  "tile_errors": 0
+}

@@ -1,0 +1,35 @@
+import type { User } from '../types/user';
+import type { Order } from '../types/order';
+export const user: User = {
+  id: 1,
+  email: 'customer01@example.com',
+  full_name: 'Demo Customer 01',
+  phone: '+2340000000002',
+  role: 'customer',
+  is_active: true,
+  created_at: '2026-10-21T09:00:00',
+  zone: 'Port Harcourt',
+  address: 'Old GRA, Port Harcourt',
+  latitude: 4.785,
+  longitude: 7.01,
+};
+export const order: Order = {
+  id: 1,
+  tracking_code: 'test-tracking-code',
+  customer_id: 1,
+  rider_id: null,
+  status: 'broadcasting',
+  pickup_address: 'Old GRA, Port Harcourt',
+  pickup_latitude: 4.785,
+  pickup_longitude: 7.01,
+  dropoff_address: 'D-Line, Port Harcourt',
+  dropoff_latitude: 4.805,
+  dropoff_longitude: 7.005,
+  recipient_name: 'Demo Recipient',
+  recipient_phone: '+2340000000003',
+  package_description: 'Books',
+  delivery_fee_minor: 0,
+  currency: 'NGN',
+  created_at: '2026-10-21T09:00:00',
+  delivered_at: null,
+};
