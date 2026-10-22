@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api, allPages, post, patch } from '../../lib/apiClient';
@@ -55,6 +55,17 @@ export default function Support() {
     enabled: !!selected,
     refetchInterval: 5000,
   });
+  const chat = useRef<HTMLDivElement>(null);
+  const atBottom = useRef(true);
+  const previousTicket = useRef(0);
+  const messageCount = messages.data?.length ?? 0;
+  useEffect(() => {
+    const switched = previousTicket.current !== selected;
+    if (switched || atBottom.current || messages.data?.at(-1)?.author_id === user?.id) {
+      if (chat.current) chat.current.scrollTop = chat.current.scrollHeight;
+    }
+    previousTicket.current = selected;
+  }, [selected, messageCount, messages.data, user?.id]);
   const create = useMutation({
     mutationFn: () =>
       post<Ticket>('/support/tickets', {
@@ -194,14 +205,29 @@ export default function Support() {
                     </p>
                   </div>
                   <QueryBoundary query={messages}>
-                    <div className="support-messages" aria-live="polite">
+                    <div
+                      className="support-messages"
+                      role="log"
+                      aria-label="Ticket messages"
+                      aria-live="polite"
+                      ref={chat}
+                      onScroll={() => {
+                        if (chat.current)
+                          atBottom.current =
+                            chat.current.scrollHeight -
+                              chat.current.scrollTop -
+                              chat.current.clientHeight <
+                            80;
+                      }}
+                    >
                       {messages.data?.map((m) => (
                         <article
                           className={`support-message ${m.author_id === user?.id ? 'support-message-own' : ''}`}
                           key={m.id}
                         >
                           <strong>
-                            {m.author_name} · {m.author_role === 'admin' ? 'Admin' : 'Customer'}
+                            {m.author_id === user?.id ? 'You' : m.author_name} ·{' '}
+                            {m.author_role === 'admin' ? 'Admin' : 'Customer'}
                           </strong>
                           <p>{m.body}</p>
                           <small>{date(m.created_at)}</small>
@@ -222,7 +248,19 @@ export default function Support() {
                         <textarea
                           required
                           maxLength={4000}
-                          rows={4}
+                          rows={2}
+                          onKeyDown={(e) => {
+                            if (
+                              e.key === 'Enter' &&
+                              !e.shiftKey &&
+                              !e.nativeEvent.isComposing &&
+                              reply.trim() &&
+                              !send.isPending
+                            ) {
+                              e.preventDefault();
+                              e.currentTarget.form?.requestSubmit();
+                            }
+                          }}
                           value={reply}
                           onChange={(e) => setReply(e.target.value)}
                         />

@@ -24,7 +24,7 @@ import { useFeedback } from '../feedback/OverlayProvider';
 import { QueryBoundary } from '../feedback/QueryBoundary';
 import { Timeline } from '../feedback/Timeline';
 import { DispatchMap } from '../maps/DispatchMap';
-import { orderCode, date } from '../../lib/constants';
+import { orderCode, date, money } from '../../lib/constants';
 import { canCancel, isPending, isTerminal, nextStatus, phase, toDate } from '../../lib/lifecycle';
 import { usePolling } from '../../hooks/usePolling';
 import { useAuth } from '../../hooks/useAuth';
@@ -127,7 +127,9 @@ export function OrderView({ role, tracking = false }: { role: Role; tracking?: b
                 <div>
                   <h2>
                     {state === 'pending'
-                      ? 'Finding a rider'
+                      ? order.payment_status === 'unpaid'
+                        ? 'Payment required'
+                        : 'Finding a rider'
                       : state === 'accepted'
                         ? 'Your rider has accepted'
                         : state === 'picked_up'
@@ -140,9 +142,11 @@ export function OrderView({ role, tracking = false }: { role: Role; tracking?: b
                   </h2>
                   <p>
                     {state === 'pending'
-                      ? waited >= 1
-                        ? 'Still waiting for an eligible rider. You can keep this page open or cancel and try again.'
-                        : 'Your request is ready for nearby available riders. Updates appear automatically.'
+                      ? order.payment_status === 'unpaid'
+                        ? 'Complete simulated payment to make this request available to riders.'
+                        : waited >= 1
+                          ? 'Still waiting for an eligible rider. You can keep this page open or cancel and try again.'
+                          : 'Your request is ready for nearby available riders. Updates appear automatically.'
                       : state === 'accepted'
                         ? 'Your rider is preparing to collect the package.'
                         : state === 'picked_up'
@@ -216,6 +220,32 @@ export function OrderView({ role, tracking = false }: { role: Role; tracking?: b
                       simulated
                     </div>
                   )}
+                </Panel>
+                <Panel title="Payment">
+                  <div className="payment-summary">
+                    <strong>{money(order.delivery_fee_minor, order.currency)}</strong>
+                    <p>
+                      {order.distance_km?.toFixed(2)} km ·{' '}
+                      {order.payment_status === 'unpaid'
+                        ? 'Awaiting simulated payment'
+                        : order.payment_reference
+                          ? 'Paid (simulated)'
+                          : 'Existing request — payment not required'}
+                    </p>
+                    {order.payment_reference && (
+                      <p className="payment-reference">Receipt: {order.payment_reference}</p>
+                    )}
+                    {role === 'customer' &&
+                      order.payment_status === 'unpaid' &&
+                      order.status !== 'cancelled' && (
+                        <Link
+                          className="button button-primary"
+                          to={`/customer/orders/${order.id}/payment`}
+                        >
+                          Pay for delivery
+                        </Link>
+                      )}
+                  </div>
                 </Panel>
                 <Panel title="Delivery information">
                   <div className="detail-info-grid">
@@ -368,7 +398,7 @@ export function OrderView({ role, tracking = false }: { role: Role; tracking?: b
                         Rate & review delivery
                       </Link>
                     )}
-                    {role === 'admin' && isPending(order) && (
+                    {role === 'admin' && isPending(order) && order.payment_status !== 'unpaid' && (
                       <div className="retry-controls">
                         <label>
                           Pickup radius
@@ -416,7 +446,7 @@ export function OrderView({ role, tracking = false }: { role: Role; tracking?: b
                     )}
                   </div>
                 </Panel>
-                {state === 'pending' && (
+                {state === 'pending' && order.payment_status !== 'unpaid' && (
                   <div className="tip-card">
                     <span>WAITING FOR A RIDER</span>
                     <p>

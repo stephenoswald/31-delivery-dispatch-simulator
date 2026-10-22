@@ -46,3 +46,25 @@ it('paginates and scopes terminal delivery history', async () => {
   expect(screen.getAllByRole('row')).toHaveLength(5);
   expect(screen.getByText('2 / 2')).toBeTruthy();
 });
+it('lets the customer resume payment for an unpaid request', () => {
+  render(
+    <MemoryRouter>
+      <OrderTable
+        role="customer"
+        orders={[
+          {
+            ...order,
+            status: 'pending',
+            payment_status: 'unpaid',
+            payment_reference: null,
+            paid_at: null,
+          },
+        ]}
+      />
+    </MemoryRouter>,
+  );
+  expect(screen.getByText('Payment required')).toBeTruthy();
+  expect(screen.getByRole('link', { name: 'Pay for order SD00001' }).getAttribute('href')).toBe(
+    '/customer/orders/1/payment',
+  );
+});

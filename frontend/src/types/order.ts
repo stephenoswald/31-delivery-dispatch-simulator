@@ -19,7 +19,18 @@ export interface DeliveryInput {
   recipient_phone: string;
   package_description?: string | null;
 }
+export interface PriceQuote {
+  distance_km: number;
+  base_fare_minor: number;
+  rate_per_km_minor: number;
+  delivery_fee_minor: number;
+  currency: string;
+}
 export interface Order extends DeliveryInput {
+  distance_km: number;
+  payment_status: 'unpaid' | 'paid';
+  payment_reference: string | null;
+  paid_at: string | null;
   id: number;
   tracking_code: string;
   customer_id: number;

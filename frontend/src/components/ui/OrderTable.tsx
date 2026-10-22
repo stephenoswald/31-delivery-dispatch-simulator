@@ -160,6 +160,9 @@ export function OrderTable({
                       </td>
                       <td data-label="Status">
                         <Badge status={o.status} />
+                        {o.payment_status === 'unpaid' && o.status === 'pending' && (
+                          <p className="muted small">Payment required</p>
+                        )}
                       </td>
                       <td data-label="Requested" className="muted small">
                         {date(o.created_at)}
@@ -167,10 +170,20 @@ export function OrderTable({
                       <td data-label="Action">
                         <Link
                           className="row-link"
-                          to={`/${role}/orders/${o.id}`}
-                          aria-label={`View order ${orderCode(o.id)}`}
+                          to={
+                            role === 'customer' &&
+                            o.payment_status === 'unpaid' &&
+                            o.status === 'pending'
+                              ? `/customer/orders/${o.id}/payment`
+                              : `/${role}/orders/${o.id}`
+                          }
+                          aria-label={`${role === 'customer' && o.payment_status === 'unpaid' && o.status === 'pending' ? 'Pay for' : 'View'} order ${orderCode(o.id)}`}
                         >
-                          View
+                          {role === 'customer' &&
+                          o.payment_status === 'unpaid' &&
+                          o.status === 'pending'
+                            ? 'Pay now'
+                            : 'View'}
                           <ArrowRight size={14} />
                         </Link>
                       </td>

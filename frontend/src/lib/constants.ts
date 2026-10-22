@@ -1,3 +1,5 @@
+export const money = (minor: number, currency = 'NGN') =>
+  new Intl.NumberFormat('en-NG', { style: 'currency', currency }).format(minor / 100);
 export const ZONE = 'Port Harcourt';
 export const DEMO_PASSWORD = 'DemoPass123!';
 export const PLACES = [

@@ -51,3 +51,17 @@ state/assignment/duplicate conflict; stale nearby requests are removed/refreshed
 This client does not call registration, profile mutation/settings, vehicle
 mutation/settings, or real-time location submission. Full compatibility gaps are
 listed in [backend-limitations.md](backend-limitations.md).
+
+
+## Payment before dispatch
+
+- Customer POST `/api/v1/customer/quote`: pickup/drop-off coordinates → distance
+  and server-calculated fare (₦500 + ₦100/km, expressed in kobo).
+- Customer POST `/api/v1/customer/orders`: stores price, returns `pending`,
+  `payment_status=unpaid`, and creates no rider invitations.
+- Customer POST `/api/v1/customer/orders/{id}/pay`: simulated `outcome` is `success`
+  or `failed`. Success returns the paid order with one receipt and enables dispatch;
+  failure returns 402 for retry. Only the owning customer can pay.
+- Order responses additionally include `distance_km`, `payment_status`,
+  `payment_reference`, and `paid_at`. Existing migrated requests retain eligibility
+  without a retroactive charge or fabricated payment receipt.
