@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../../hooks/useAuth';
 import { Brand, Button, Feedback } from '../../../components/ui';
-import { DemoNote } from '../components/DemoNote';
 import { DEMO_PASSWORD } from '../../../lib/constants';
 import type { Role } from '../../../types/user';
 export default function Login() {
@@ -206,8 +205,6 @@ export default function Login() {
               <ArrowRight size={18} />
             </Button>
           </form>
-          <DemoNote />
-          <p className="auth-trust">Account access is managed by your administrator.</p>
         </div>
         <footer className="auth-footer">
           © {new Date().getFullYear()} SwiftDispatch<span>Port Harcourt, Nigeria</span>

@@ -6,7 +6,7 @@ export interface AuthState {
   loading: boolean;
   error: Error | null;
   login: (data: Credentials, remember?: boolean) => Promise<User>;
-  logout: () => void;
+  logout: () => Promise<void>;
   retry: () => void;
 }
 export const AuthContext = createContext<AuthState | null>(null);
