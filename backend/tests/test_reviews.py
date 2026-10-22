@@ -7,7 +7,7 @@ def test_review_eligibility_and_uniqueness(client, headers, order_payload, ready
     assert client.post(path,headers=headers(1),json={"rating":5}).status_code==409
     client.post(f"/api/v1/rider/offers/{offer_id(client,headers)}/accept",headers=headers(3))
     for status in ("picked_up","in_transit","delivered"):
-        assert client.patch(f"/api/v1/rider/orders/{oid}/status",headers=headers(3),json={"status":status}).status_code==200
+        assert client.patch(f"/api/v1/rider/orders/{oid}/status",headers=headers(3),json={"status":status, **({"delivery_code":client.get(f"/api/v1/customer/orders/{oid}/confirmation-code",headers=headers(1)).json()["delivery_code"]} if status=="delivered" else {})}).status_code==200
     assert client.post(path,headers=headers(2),json={"rating":5}).status_code==404
     assert client.post(path,headers=headers(1),json={"rating":6}).status_code==422
     response=client.post(path,headers=headers(1),json={"rating":5,"comment":"Great delivery"})

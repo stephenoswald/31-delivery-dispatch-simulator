@@ -28,6 +28,7 @@ class OrderOut(OrderCreate, ORMModel):
     created_at: datetime
 
 class OrderProgress(BaseModel):
+    delivery_code: Optional[str] = Field(default=None, pattern=r"^[0-9]{6}$")
     status: Literal["picked_up", "in_transit", "delivered"]
 
 class BroadcastRequest(BaseModel):

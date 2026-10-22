@@ -38,3 +38,27 @@ def test_expired_token(client, monkeypatch):
     token = create_token(1)
     monkeypatch.setattr("app.core.security.time.time", lambda: 1 + settings.token_ttl_seconds)
     assert client.get("/api/v1/auth/me", headers={"Authorization":f"Bearer {token}"}).status_code == 401
+
+
+def test_logout_marks_rider_offline_for_admin(client, headers, ready_riders):
+    assert client.post('/api/v1/auth/logout').status_code == 401
+    assert client.post('/api/v1/auth/logout',headers=headers(3)).status_code == 200
+    riders = client.get('/api/v1/admin/riders', headers=headers(5)).json()
+    assert next(r for r in riders if r['user_id']==3)['status']=='offline'
+    assert next(r for r in riders if r['user_id']==4)['status']=='available'
+    assert client.get('/api/v1/admin/analytics',headers=headers(5)).json()['available_riders']==1
+    assert client.post('/api/v1/auth/logout',headers=headers(3)).status_code == 200
+    assert client.post('/api/v1/auth/logout',headers=headers(1)).status_code == 200
+
+
+def test_logout_preserves_active_delivery_and_login_restores_busy(client, headers, ready_riders, order_payload):
+    from conftest import create_order, offer_id
+    oid=create_order(client,headers,order_payload)['id']
+    assert client.post(f'/api/v1/rider/offers/{offer_id(client,headers)}/accept',headers=headers(3)).status_code==200
+    assert client.post('/api/v1/auth/logout',headers=headers(3)).status_code==200
+    assert client.get('/api/v1/rider/profile',headers=headers(3)).json()['status']=='offline'
+    assert client.get(f'/api/v1/customer/orders/{oid}',headers=headers(1)).json()['rider_id']==1
+    login=client.post('/api/v1/auth/login',json={'email':'user3@example.com','password':'password123'})
+    assert login.status_code==200
+    auth={'Authorization':'Bearer '+login.json()['access_token']}
+    assert client.get('/api/v1/rider/profile',headers=auth).json()['status']=='busy'

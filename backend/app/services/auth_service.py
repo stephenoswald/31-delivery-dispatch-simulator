@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from app.core.config import settings
 from app.core.security import hash_password, verify_password, create_token
-from app.models import User, RiderProfile
+from app.models import User, RiderProfile, Order
 from app.schemas.auth import TokenOut
 from app.schemas.user import UserOut
 
@@ -24,5 +24,10 @@ def login(db, data):
     valid = verify_password(data.password, user.password_hash if user else DUMMY_HASH)
     if not valid or user is None or not user.is_active:
         raise HTTPException(401, "Invalid email or password", headers={"WWW-Authenticate": "Bearer"})
+    if user.role == "rider":
+        rider = db.query(RiderProfile).filter_by(user_id=user.id).first()
+        if rider and db.query(Order.id).filter(Order.rider_id == rider.id, Order.status.in_(("assigned", "picked_up", "in_transit"))).first():
+            rider.status = "busy"
+            db.commit()
     return TokenOut(access_token=create_token(user.id), expires_in=settings.token_ttl_seconds,
                     user=UserOut.model_validate(user))

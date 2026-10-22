@@ -31,6 +31,11 @@ def get_order(order_id: int, user: User = Depends(customer_user), db: Session = 
 def cancel(order_id: int, user: User = Depends(customer_user), db: Session = Depends(get_db)):
     return order_service.cancel_order(db, order_service.get_order(db, order_id, user), user.id)
 
+@router.get("/orders/{order_id}/confirmation-code")
+def confirmation_code(order_id: int, user: User = Depends(customer_user), db: Session = Depends(get_db)):
+    order = order_service.get_order(db, order_id, user)
+    return {"delivery_code": order.delivery_code if order.status not in ("delivered", "cancelled") else None}
+
 @router.get("/orders/{order_id}/tracking", response_model=TrackingOut)
 def tracking(order_id: int, user: User = Depends(customer_user), db: Session = Depends(get_db)):
     return tracking_service.tracking(db, order_service.get_order(db, order_id, user))

@@ -4,6 +4,9 @@ from app.db.base import Base
 class Order(Base):
     __tablename__ = "orders"
     id = Column(Integer, primary_key=True)
+    delivery_code = Column(String(6))
+    code_attempts = Column(Integer, nullable=False, default=0, server_default="0")
+    code_locked_until = Column(DateTime)
     tracking_code = Column(String(36), nullable=False, unique=True)
     customer_id = Column(Integer, ForeignKey("users.id", ondelete="RESTRICT"), nullable=False, index=True)
     rider_id = Column(Integer, ForeignKey("rider_profiles.id", ondelete="RESTRICT"), index=True)

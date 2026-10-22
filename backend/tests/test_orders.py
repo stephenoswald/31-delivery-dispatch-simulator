@@ -13,7 +13,7 @@ def test_delivery_lifecycle_and_cancellation(client, headers, order_payload, rea
     assert client.patch(path, headers=headers(3), json={"status":"picked_up"}).status_code == 200
     assert client.post(f"/api/v1/customer/orders/{oid}/cancel", headers=headers(1)).status_code == 409
     assert client.patch(path, headers=headers(3), json={"status":"in_transit"}).status_code == 200
-    delivered = client.patch(path, headers=headers(3), json={"status":"delivered"})
+    delivered = client.patch(path, headers=headers(3), json={"status":"delivered", "delivery_code":client.get(f"/api/v1/customer/orders/{oid}/confirmation-code",headers=headers(1)).json()["delivery_code"]})
     assert delivered.status_code == 200
     assert delivered.json()["delivered_at"]
     assert client.get("/api/v1/rider/profile", headers=headers(3)).json()["status"] == "available"

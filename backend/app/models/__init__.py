@@ -1,3 +1,4 @@
+from app.models.ticket import Ticket, TicketMessage
 from app.models.user import User
 from app.models.rider_profile import RiderProfile
 from app.models.order import Order

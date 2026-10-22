@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.core.dependencies import current_user
 from app.db.session import get_db
-from app.models import User
+from app.models import User, RiderProfile
 from app.schemas.auth import Register, Credentials, TokenOut
 from app.schemas.user import UserOut, UserUpdate
 from app.services import auth_service
@@ -31,3 +31,12 @@ def update_me(data: UserUpdate, user: User = Depends(current_user), db: Session 
     db.commit()
     db.refresh(user)
     return user
+
+
+@router.post("/logout")
+def logout(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    # Going offline does not cancel or release an already assigned delivery.
+    if user.role == "rider":
+        db.query(RiderProfile).filter_by(user_id=user.id).update({"status": "offline"}, synchronize_session=False)
+    db.commit()
+    return {"status": "signed_out"}

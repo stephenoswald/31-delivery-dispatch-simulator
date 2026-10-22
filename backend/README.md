@@ -191,3 +191,25 @@ and roles, ownership, validation, dispatch radius/freshness/expiry, concurrent o
 acceptance, rejection/rebroadcasting, cancellation, delivery transitions, tracking
 privacy, reviews, admin operations, and migration/model consistency. They do not
 write demo accounts or deliveries into the local application database.
+
+
+## Support tickets and delivery confirmation
+
+Run `alembic upgrade head` before starting the updated API (migration `0003`).
+Existing active orders are assigned receipt codes; new orders generate them at
+creation. Only the owning customer can retrieve a code through
+`GET /api/v1/customer/orders/{id}/confirmation-code`. Rider completion now requires
+`{"status":"delivered","delivery_code":"123456"}` on the existing progress endpoint.
+Five incorrect attempts trigger a one-minute cooldown; valid completion remains
+subject to assigned-rider authorization and sequential lifecycle transitions.
+Codes are omitted from all general order schemas and audit events.
+
+`/api/v1/support/tickets` supports customer creation and scoped listing. Detail and
+paginated messages are at `/{ticket_id}` and `/{ticket_id}/messages`; customers and
+admins can post messages. Only admins can PATCH ticket status (`open`/`resolved`).
+Riders and other customers cannot access conversations. Resolved tickets reject
+new messages until reopened. Messages contain plain text, not attachments or email.
+
+The existing free Render start command can remain:
+`alembic upgrade head && python -m scripts.seed_demo && uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
+Local SQLite tickets, orders, and codes disappear with Render Free filesystem resets.

@@ -64,7 +64,7 @@ def get_order(order_id: int, user: User = Depends(rider_user), db: Session = Dep
 @router.patch("/orders/{order_id}/status", response_model=OrderOut)
 def progress(order_id: int, data: OrderProgress, rider: RiderProfile = Depends(rider_profile),
              user: User = Depends(rider_user), db: Session = Depends(get_db)):
-    return order_service.progress_order(db, order_service.get_order(db, order_id, user), rider, user.id, data.status)
+    return order_service.progress_order(db, order_service.get_order(db, order_id, user), rider, user.id, data.status, data.delivery_code)
 
 @router.get("/reviews", response_model=List[ReviewOut])
 def reviews(offset: int = Query(0, ge=0), limit: int = Query(20, ge=1, le=100),

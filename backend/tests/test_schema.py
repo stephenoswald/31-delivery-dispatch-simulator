@@ -18,7 +18,7 @@ def db():
     def foreign_keys(connection, _):
         connection.execute('PRAGMA foreign_keys=ON')
     with engine.begin() as connection:
-        for filename in ('0001_initial_schema.py', '0002_user_locations.py'):
+        for filename in ('0001_initial_schema.py', '0002_user_locations.py', '0003_support_confirmation.py'):
             path = Path(__file__).parents[1] / 'migrations/versions' / filename
             spec = importlib.util.spec_from_file_location('schema_migration', path)
             migration = importlib.util.module_from_spec(spec)

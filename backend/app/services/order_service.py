@@ -1,3 +1,6 @@
+import secrets
+import hmac
+from datetime import timedelta
 from fastapi import HTTPException
 from app.models import Order, OrderEvent, RiderProfile, BroadcastOffer
 from app.utils.identifiers import tracking_code
@@ -25,7 +28,7 @@ def add_event(db, order, actor_id, event_type, previous=None, details=None):
 
 def create_order(db, user, data):
     from app.services.dispatch_service import broadcast
-    order = Order(**data.model_dump(), customer_id=user.id, tracking_code=tracking_code(), status="pending")
+    order = Order(**data.model_dump(), customer_id=user.id, tracking_code=tracking_code(), status="pending", delivery_code=f"{secrets.randbelow(1000000):06d}")
     db.add(order)
     db.flush()
     add_event(db, order, user.id, "created")
@@ -48,10 +51,23 @@ def cancel_order(db, order, actor_id):
     db.refresh(order)
     return order
 
-def progress_order(db, order, rider, actor_id, status):
+def progress_order(db, order, rider, actor_id, status, delivery_code=None):
     transitions = {"assigned": "picked_up", "picked_up": "in_transit", "in_transit": "delivered"}
     if transitions.get(order.status) != status:
         raise HTTPException(409, "Invalid delivery status transition")
+    if status == "delivered":
+        now = utcnow()
+        if order.code_locked_until and order.code_locked_until > now:
+            raise HTTPException(429, "Too many incorrect codes. Try again in one minute.")
+        if not order.delivery_code or not delivery_code or not hmac.compare_digest(order.delivery_code, delivery_code):
+            order.code_attempts = (order.code_attempts or 0) + 1
+            if order.code_attempts >= 5:
+                order.code_locked_until = now + timedelta(seconds=60)
+                order.code_attempts = 0
+            db.commit()
+            raise HTTPException(400, "Incorrect delivery code. Ask the recipient for the six-digit code.")
+        order.code_attempts = 0
+        order.code_locked_until = None
     previous = order.status
     order.status = status
     if status == "delivered":
