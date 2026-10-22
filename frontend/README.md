@@ -137,3 +137,23 @@ other runtime database data.
 
 Login artwork uses responsive JPEG variants (approximately 282 KB desktop / 71 KB
 small) instead of downloading the original 1.89 MB PNG.
+
+
+## Simulated pre-dispatch payment
+
+New bookings open a payment page before rider discovery. The API calculates a
+straight-line distance rounded to two decimals, then charges a simulated ₦500
+base fare plus ₦100/km. Amounts are stored in kobo. The displayed quote and stored
+order fee come from the server; clients cannot submit their own price or mark
+orders paid through the creation payload.
+
+Use Pay to simulate success, or Simulate failed payment to exercise retry. No
+card data is collected and no real money moves. Unpaid orders have Pay now links
+in delivery lists and can be cancelled. Successful retries reuse the same receipt;
+only paid orders are broadcast or accepted by riders. Deploy backend migration
+`0004` before this frontend. Existing orders remain eligible without a retroactive
+payment; their old fees are preserved and no payment receipt is fabricated.
+
+Support messages use incoming bubbles on the left and your own bubbles on the
+right. Enter sends a reply; Shift+Enter adds a new line. Conversations scroll to
+new messages when near the bottom without interrupting reading older replies.

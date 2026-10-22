@@ -38,6 +38,14 @@ it('shows the order conversation and sends a customer reply', async () => {
             body: 'We are checking with the rider.',
             created_at: ticket.created_at,
           },
+          {
+            id: 3,
+            author_id: 1,
+            author_name: 'Customer',
+            author_role: 'customer',
+            body: 'It has not arrived yet.',
+            created_at: ticket.created_at,
+          },
         ] as never)
       : ([ticket] as never),
   );
@@ -55,6 +63,18 @@ it('shows the order conversation and sends a customer reply', async () => {
     '/customer/orders/3',
   );
   expect(screen.queryByRole('button', { name: 'Mark resolved' })).toBeNull();
+  expect(
+    screen
+      .getByText('It has not arrived yet.')
+      .closest('article')
+      ?.classList.contains('support-message-own'),
+  ).toBe(true);
+  expect(
+    screen
+      .getByText('We are checking with the rider.')
+      .closest('article')
+      ?.classList.contains('support-message-own'),
+  ).toBe(false);
   await userEvent.type(screen.getByLabelText('Reply'), 'Thank you, please update me.');
   await userEvent.click(screen.getByRole('button', { name: 'Send message' }));
   await waitFor(() =>

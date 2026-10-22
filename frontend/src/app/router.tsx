@@ -10,6 +10,7 @@ const Support = lazy(() => import('../features/support/Support'));
 const Login = lazy(() => import('../features/auth/pages/Login'));
 const Profile = lazy(() => import('../features/auth/pages/Profile'));
 const CustomerDashboard = lazy(() => import('../features/customer/pages/Dashboard'));
+const Payment = lazy(() => import('../features/customer/pages/Payment'));
 const CreateOrder = lazy(() => import('../features/customer/pages/CreateOrder'));
 const CustomerOrderDetails = lazy(() => import('../features/customer/pages/OrderDetails'));
 const Tracking = lazy(() => import('../features/customer/pages/Tracking'));
@@ -79,6 +80,7 @@ export const router = createBrowserRouter([
               { path: 'orders', element: <OrderHistory /> },
               { path: 'orders/:id', element: <CustomerOrderDetails /> },
               { path: 'orders/:id/tracking', element: <Tracking /> },
+              { path: 'orders/:id/payment', element: <Payment /> },
               { path: 'orders/:id/review', element: <ReviewOrder /> },
               { path: 'history', element: <OrderHistory /> },
               { path: 'profile', element: <Profile /> },

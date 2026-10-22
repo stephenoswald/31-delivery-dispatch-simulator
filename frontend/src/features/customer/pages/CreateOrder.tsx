@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -6,7 +7,7 @@ import { PageHeading, Panel, Button, Feedback } from '../../../components/ui';
 import { Field, Input, Select, Textarea } from '../../../components/ui/Fields';
 import { DispatchMap } from '../../../components/maps/DispatchMap';
 import { useFeedback } from '../../../components/feedback/OverlayProvider';
-import { PLACES } from '../../../lib/constants';
+import { PLACES, money } from '../../../lib/constants';
 import { useAuth } from '../../../hooks/useAuth';
 import { customerApi } from '../api';
 import { queryClient } from '../../../lib/queryClient';
@@ -36,6 +37,26 @@ export default function CreateOrder() {
   const [kind, setKind] = useState('Parcel');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const quoteInput = {
+    pickup_latitude: Number(pickup.latitude),
+    pickup_longitude: Number(pickup.longitude),
+    dropoff_latitude: Number(dropoff.latitude),
+    dropoff_longitude: Number(dropoff.longitude),
+  };
+  const validCoordinates =
+    [pickup.latitude, pickup.longitude, dropoff.latitude, dropoff.longitude].every(
+      (v) => v !== '' && Number.isFinite(Number(v)),
+    ) &&
+    Math.abs(quoteInput.pickup_latitude) <= 90 &&
+    Math.abs(quoteInput.dropoff_latitude) <= 90 &&
+    Math.abs(quoteInput.pickup_longitude) <= 180 &&
+    Math.abs(quoteInput.dropoff_longitude) <= 180;
+  const quote = useQuery({
+    queryKey: ['customer', 'quote', quoteInput],
+    queryFn: () => customerApi.quote(quoteInput),
+    enabled: validCoordinates,
+    staleTime: 60000,
+  });
   function choose(kind: 'pickup' | 'dropoff', index: number) {
     const place = PLACES[index];
     const data = {
@@ -67,7 +88,7 @@ export default function CreateOrder() {
     if (
       !(await feedback.confirm({
         title: 'Confirm delivery request',
-        description: `Collect from ${pickup.address} and deliver to ${dropoff.address} for ${recipient}. Available nearby riders will be able to accept your request.`,
+        description: `Collect from ${pickup.address} and deliver to ${dropoff.address} for ${recipient}. You will pay the simulated distance-based fee before nearby riders can see your request.`,
         action: 'Request delivery',
       }))
     )
@@ -86,8 +107,8 @@ export default function CreateOrder() {
         package_description: `${kind}${notes ? ': ' + notes.trim() : ''}`,
       });
       void queryClient.invalidateQueries();
-      feedback.toast('Delivery requested. We’re waiting for a nearby rider.');
-      navigate(`/customer/orders/${order.id}/tracking`);
+      feedback.toast('Request created. Complete simulated payment to find a rider.');
+      navigate(`/customer/orders/${order.id}/payment`);
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -277,10 +298,25 @@ export default function CreateOrder() {
                 </span>
               </div>
             </div>
+            <div className="payment-summary">
+              <h3>Delivery fee</h3>
+              {quote.isFetching && <p role="status">Calculating fee…</p>}
+              <Feedback error={quote.error?.message} />
+              {quote.data && validCoordinates && (
+                <>
+                  <strong>{money(quote.data.delivery_fee_minor)}</strong>
+                  <p>{quote.data.distance_km.toFixed(2)} km · ₦500 base fare + ₦100/km</p>
+                </>
+              )}
+              <p className="muted small">
+                Straight-line distance, not road distance. Simulated payment only; no money is
+                charged.
+              </p>
+            </div>
             <div className="booking-check">
               <CheckCircle2 size={17} />
               <span>
-                Riders accept requests themselves. You’ll see updates as soon as one accepts.
+                Pay the simulated fee first. Your request is then made available to nearby riders.
               </span>
             </div>
           </Panel>

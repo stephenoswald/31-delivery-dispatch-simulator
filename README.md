@@ -27,5 +27,5 @@ npm run build
 [Demo walkthrough](docs/demo-script.md) · [QA report](docs/qa-report.md)
 
 This branch contains frontend changes. The existing backend and SQLite schema
-were preserved. All operational data comes from FastAPI; no financial, signup,
-payout, promotion, or settings UI is included. Rider requests use HTTP polling.
+were preserved. All operational data comes from FastAPI; simulated distance-based payment is included; signup,
+payout, promotion, and settings UI are not included. Rider requests use HTTP polling.
