@@ -54,7 +54,11 @@ export default function Login() {
       <section className="auth-art auth-photo">
         <img
           className="auth-rider-photo"
-          src="/assets/swiftdispatch-rider.png"
+          src="/assets/swiftdispatch-rider.jpg"
+          srcSet="/assets/swiftdispatch-rider-small.jpg 427w, /assets/swiftdispatch-rider.jpg 1024w"
+          sizes="(max-width: 767px) 100vw, 48vw"
+          width={1024}
+          height={1536}
           alt="SwiftDispatch rider on a motorcycle with a branded delivery bag"
           fetchPriority="high"
         />

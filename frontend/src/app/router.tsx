@@ -6,6 +6,7 @@ import { Loading, ErrorState, Button, Brand } from '../components/ui';
 import CustomerLayout from '../components/layout/CustomerLayout';
 import RiderLayout from '../components/layout/RiderLayout';
 import AdminLayout from '../components/layout/AdminLayout';
+const Support = lazy(() => import('../features/support/Support'));
 const Login = lazy(() => import('../features/auth/pages/Login'));
 const Profile = lazy(() => import('../features/auth/pages/Profile'));
 const CustomerDashboard = lazy(() => import('../features/customer/pages/Dashboard'));
@@ -73,6 +74,7 @@ export const router = createBrowserRouter([
             element: <CustomerLayout />,
             children: [
               { index: true, element: <CustomerDashboard /> },
+              { path: 'support', element: <Support /> },
               { path: 'new', element: <CreateOrder /> },
               { path: 'orders', element: <OrderHistory /> },
               { path: 'orders/:id', element: <CustomerOrderDetails /> },
@@ -110,6 +112,7 @@ export const router = createBrowserRouter([
             element: <AdminLayout />,
             children: [
               { index: true, element: <AdminDashboard /> },
+              { path: 'support', element: <Support /> },
               { path: 'orders', element: <Orders /> },
               { path: 'orders/:id', element: <AdminOrderDetails /> },
               { path: 'tracking', element: <LiveTracking /> },

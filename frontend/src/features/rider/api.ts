@@ -24,7 +24,14 @@ export const riderApi = {
   },
   accept: (reference: number) => post<Order>(`/rider/offers/${reference}/accept`),
   decline: (reference: number) => post<unknown>(`/rider/offers/${reference}/reject`),
-  progress: (id: number, status: 'picked_up' | 'in_transit' | 'delivered') =>
-    patch<Order>(`/rider/orders/${id}/status`, { status }),
+  progress: (
+    id: number,
+    status: 'picked_up' | 'in_transit' | 'delivered',
+    delivery_code?: string,
+  ) =>
+    patch<Order>(`/rider/orders/${id}/status`, {
+      status,
+      ...(delivery_code ? { delivery_code } : {}),
+    }),
   reviews: () => allPages<Review>('/rider/reviews'),
 };
